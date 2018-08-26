@@ -3246,6 +3246,12 @@ void MainWindow::tabPrev() {
   QMetaObject::invokeMethod(tabs, "setCurrentIndex", Q_ARG(int, index));
 }
 
+void MainWindow::tabSet(int index) {
+  /* Force index into tab range */
+  index = index % tabs->count();
+  QMetaObject::invokeMethod(tabs, "setCurrentIndex", Q_ARG(int, index));
+}
+
 void MainWindow::setLineMarkerinCurrentWorkspace(int num) {
   if(num > 0) {
     SonicPiScintilla *ws = (SonicPiScintilla*)tabs->currentWidget();

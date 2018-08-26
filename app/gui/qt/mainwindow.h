@@ -163,6 +163,7 @@ private slots:
     void replaceLines(QString id, QString content, int first_line, int finish_line, int point_line, int point_index);
     void tabNext();
     void tabPrev();
+    void tabSet(int index);
     void helpContext();
     void resetErrorPane();
     void helpScrollUp();
