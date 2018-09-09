@@ -31,8 +31,14 @@ if [[ -z "$(which brew)" ]]; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 #Install homebrew prerequisites
-brew install qt boost cmake pkg-config aubio libsndfile wget
-QT="$(brew --prefix qt)"
+minor_os_version="$(sw_vers -productVersion | cut -d\. -f 2)"
+if [[ "$minor_os_version" -lt 11 ]]; then
+  QT_PACKAGE=qt55
+else
+  QT_PACKAGE=qt
+fi
+brew install "$QT_PACKAGE" boost cmake pkg-config aubio libsndfile wget
+QT="$(brew --prefix $QT_PACKAGE)"
 
 #Download and extract source packages
 cd "$SP_ROOT"
