@@ -2691,6 +2691,16 @@ void MainWindow::setupAction(QAction *action, char key, QString tooltip,
 
 void MainWindow::createShortcuts()
 {
+  new QShortcut(metaKey('0'), this, SLOT(tabSet0()));
+  new QShortcut(metaKey('1'), this, SLOT(tabSet1()));
+  new QShortcut(metaKey('2'), this, SLOT(tabSet2()));
+  new QShortcut(metaKey('3'), this, SLOT(tabSet3()));
+  new QShortcut(metaKey('4'), this, SLOT(tabSet4()));
+  new QShortcut(metaKey('5'), this, SLOT(tabSet5()));
+  new QShortcut(metaKey('6'), this, SLOT(tabSet6()));
+  new QShortcut(metaKey('7'), this, SLOT(tabSet7()));
+  new QShortcut(metaKey('8'), this, SLOT(tabSet8()));
+  new QShortcut(metaKey('9'), this, SLOT(tabSet9()));
   new QShortcut(shiftMetaKey('['), this, SLOT(tabPrev()));
   new QShortcut(shiftMetaKey(']'), this, SLOT(tabNext()));
   new QShortcut(QKeySequence("F8"), this, SLOT(reloadServerCode()));
@@ -3245,6 +3255,19 @@ void MainWindow::tabPrev() {
     index--;
   QMetaObject::invokeMethod(tabs, "setCurrentIndex", Q_ARG(int, index));
 }
+
+#define MAINWINDOW_TAB_SET(index) void MainWindow::tabSet ## index() { tabSet((index)); } 
+
+MAINWINDOW_TAB_SET(0)
+MAINWINDOW_TAB_SET(1)
+MAINWINDOW_TAB_SET(2)
+MAINWINDOW_TAB_SET(3)
+MAINWINDOW_TAB_SET(4)
+MAINWINDOW_TAB_SET(5)
+MAINWINDOW_TAB_SET(6)
+MAINWINDOW_TAB_SET(7)
+MAINWINDOW_TAB_SET(8)
+MAINWINDOW_TAB_SET(9)
 
 void MainWindow::tabSet(int index) {
   /* Force index into tab range */
