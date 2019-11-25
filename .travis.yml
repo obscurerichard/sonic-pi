@@ -76,6 +76,7 @@ install:
     echo "* Compiling the vendor/ ruby gems *"
     echo "***********************************"
     cd "$TRAVIS_BUILD_DIR/app/server/ruby/bin"
+    set +u # rvm hates the -e switch
     ruby ./compile-extensions.rb
 
 script:
@@ -87,6 +88,7 @@ script:
     echo "* Running the Sonic Pi test suite *"
     echo "***********************************"
     cd "$TRAVIS_BUILD_DIR/app/server/ruby/test"
+    set +u # rvm hates the -e switch
     rake test
 
 after-script:
@@ -112,3 +114,4 @@ after-script:
     echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
         exit 1
     esac
+    set +u # travis also hates the -u switch
