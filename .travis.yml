@@ -1,3 +1,4 @@
+---
 language: ruby
 
 os:
@@ -16,27 +17,27 @@ addons:
     sources:
       - sourceline: 'ppa:latthias/qgis-travis-deps'
     packages:
-    - ruby-all-dev
-    - rake
-    - cmake
-    - pkg-config
-    - g++
-    - libfftw3-dev
-    - libffi-dev
-    - libqt5scintilla2-dev
-    - qtbase5-dev
-    - qttools5-dev
-    - qttools5-dev-tools
-    - qt5-default
-    - libqt5opengl5-dev
-    - libqt5svg5-dev
-    - libqwt-qt5-dev
-    - libboost-all-dev
+      - ruby-all-dev
+      - rake
+      - cmake
+      - pkg-config
+      - g++
+      - libfftw3-dev
+      - libffi-dev
+      - libqt5scintilla2-dev
+      - qtbase5-dev
+      - qttools5-dev
+      - qttools5-dev-tools
+      - qt5-default
+      - libqt5opengl5-dev
+      - libqt5svg5-dev
+      - libqwt-qt5-dev
+      - libboost-all-dev
 compiler: gcc
 
 cache:
- - apt
- - ccache
+  - apt
+  - ccache
 
 rvm:
   - 2.1.10
@@ -46,8 +47,8 @@ rvm:
   - 2.5.1
 
 install:
-# the | starts a multiline YAML entry
- - |
+  # the | starts a multiline YAML entry
+  - |
     #!/usr/bin/env bash
     set -euo pipefail
     case "$TRAVIS_OS_NAME" in
@@ -68,7 +69,7 @@ install:
         echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
         exit 1
     esac
-    # this compiles the gems and runs the Sonic Pi test suite 
+    # this compiles the gems and runs the Sonic Pi test suite
     # with the ruby installed through Travis's rvm
     echo ""
     echo "***********************************"
@@ -78,7 +79,7 @@ install:
     ruby ./compile-extensions.rb
 
 script:
- - |
+  - |
     #!/usr/bin/env bash
     set -euo pipefail
     echo ""
@@ -88,10 +89,14 @@ script:
     cd "$TRAVIS_BUILD_DIR/app/server/ruby/test"
     rake test
 
-deploy:
- - |
+after-script:
+  - |
     #!/usr/bin/env bash
     set -euo pipefail
+    echo ""
+    echo "***********************************"
+    echo "* Building packages for distros   *"
+    echo "***********************************"
     case "$TRAVIS_OS_NAME" in
     linux)
         app/gui/qt/build-ubuntu-app
@@ -104,6 +109,6 @@ deploy:
         powershell build-windows-app.ps1
         ;;
     *)
-        echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
+    echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
         exit 1
     esac
