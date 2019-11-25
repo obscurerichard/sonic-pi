@@ -48,70 +48,67 @@ rvm:
 
 install:
   # the | starts a multiline YAML entry
-  - |
-    #!/usr/bin/env bash
-    set -euo pipefail
-    case "$TRAVIS_OS_NAME" in
-    linux)
-        wget http://aubio.org/pub/aubio-0.4.4.tar.bz2
-        tar xvjf aubio-0.4.4.tar.bz2
-        cd aubio-0.4.4
-        ./waf configure build
-        sudo ./waf install
-        ;;
-    osx)
-        echo "OSX, yeah!"
-        ;;
-    windows)
-        echo "Windows, oooh!"
-        ;;
-    *)
-        echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
-        exit 1
-    esac
-    # this compiles the gems and runs the Sonic Pi test suite
-    # with the ruby installed through Travis's rvm
-    echo ""
-    echo "***********************************"
-    echo "* Compiling the vendor/ ruby gems *"
-    echo "***********************************"
-    cd "$TRAVIS_BUILD_DIR/app/server/ruby/bin"
-    set +u # rvm hates the -e switch
-    ruby ./compile-extensions.rb
+  - #!/usr/bin/env bash
+  - set -euo pipefail
+  - case "$TRAVIS_OS_NAME" in
+  - linux)
+  -     wget http://aubio.org/pub/aubio-0.4.4.tar.bz2
+  -     tar xvjf aubio-0.4.4.tar.bz2
+  -     cd aubio-0.4.4
+  -     ./waf configure build
+  -     sudo ./waf install
+  -     ;;
+  - osx)
+  -     echo "OSX, yeah!"
+  -     ;;
+  - windows)
+  -     echo "Windows, oooh!"
+  -     ;;
+  - *)
+  -     echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
+  -     exit 1
+  - esac
+  - # this compiles the gems and runs the Sonic Pi test suite
+  - # with the ruby installed through Travis's rvm
+  - echo ""
+  - echo "***********************************"
+  - echo "* Compiling the vendor/ ruby gems *"
+  - echo "***********************************"
+  - cd "$TRAVIS_BUILD_DIR/app/server/ruby/bin"
+  - set +u # rvm hates the -e switch
+  - ruby ./compile-extensions.rb
 
 script:
-  - |
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo ""
-    echo "***********************************"
-    echo "* Running the Sonic Pi test suite *"
-    echo "***********************************"
-    cd "$TRAVIS_BUILD_DIR/app/server/ruby/test"
-    set +u # rvm hates the -e switch
-    rake test
+  - #!/usr/bin/env bash
+  - set -euo pipefail
+  - echo ""
+  - echo "***********************************"
+  - echo "* Running the Sonic Pi test suite *"
+  - echo "***********************************"
+  - cd "$TRAVIS_BUILD_DIR/app/server/ruby/test"
+  - set +u # rvm hates the -e switch
+  - rake test
 
 after-script:
-  - |
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo ""
-    echo "***********************************"
-    echo "* Building packages for distros   *"
-    echo "***********************************"
-    case "$TRAVIS_OS_NAME" in
-    linux)
-        app/gui/qt/build-ubuntu-app
-        ;;
-    osx)
-        app/gui/qt/build-osx-app
-        ;;
-    windows)
-        cd app/gui/qt
-        powershell build-windows-app.ps1
-        ;;
-    *)
-    echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
-        exit 1
-    esac
-    set +u # travis also hates the -u switch
+  - #!/usr/bin/env bash
+  - set -euo pipefail
+  - echo ""
+  - echo "***********************************"
+  - echo "* Building packages for distros   *"
+  - echo "***********************************"
+  - case "$TRAVIS_OS_NAME" in
+  - linux)
+  -     app/gui/qt/build-ubuntu-app
+  -     ;;
+  - osx)
+  -     app/gui/qt/build-osx-app
+  -     ;;
+  - windows)
+  -     cd app/gui/qt
+  -     powershell build-windows-app.ps1
+  -     ;;
+  - *)
+  - echo "ERROR: Unsupported OS $TRAVIS_OS_NAME"
+  -     exit 1
+  - esac
+  - set +u # travis also hates the -u switch
